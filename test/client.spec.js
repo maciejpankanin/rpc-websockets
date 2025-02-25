@@ -158,7 +158,7 @@ describe("Client", function()
             })
         })
 
-        it("should call an RPC method with string id receive a valid response", function(done)
+        it("should call an RPC method with string id and receive a valid response", function(done)
         {
             let count = 1
             const client = new WebSocket("ws://" + host + ":" + port, {}, (method) => {
