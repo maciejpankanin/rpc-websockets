@@ -181,6 +181,61 @@ describe("Client", function()
             })
         })
 
+        it("should call two RPC methods in parralel with a valid response", function(done)
+        {
+            const client = new WebSocket("ws://" + host + ":" + port)
+
+            client.on("open", function()
+            {
+                const both = Promise.all([
+                    client.call("greet"),
+                    client.call("sum", [5, 3])
+                ]);
+
+                both.then(function(response)
+                {
+                    response[0].should.equal("Hello, subscriber!")
+                    response[1].should.equal(8)
+
+                    done()
+                    client.close()
+                }, function(error)
+                {
+                    done(error)
+                })
+            })
+
+            client.on("error", (error) => console.log(error))
+        })
+
+        it("should call two RPC methods in a row with a valid response", function(done)
+        {
+            const client = new WebSocket("ws://" + host + ":" + port)
+
+            client.on("open", function()
+            {
+                client.call("greet").then(function(response)
+                {
+                    response.should.equal("Hello, subscriber!")
+                    client.call("sum", [5, 3]).then(function(response)
+                    {
+                        response.should.equal(8)
+
+                        done()
+                        client.close()
+                    }, function(error)
+                    {
+                        done(error)
+                    })
+                }, function(error)
+                {
+                    done(error)
+                })
+            })
+
+            client.on("error", (error) => console.log(error))
+        })
+
         it("should forward ws options to ws.send", function(done)
         {
             const client = new WebSocket("ws://" + host + ":" + port)
