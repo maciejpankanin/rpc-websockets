@@ -629,17 +629,44 @@ describe("Client", function()
             })
         })
 
-        it("should receive an event from a joined namespace", function(done)
+        it("should not receive an event from a joined namespace if wasn't subscribed", function(done)
         {
             const chat = server.of("/chat")
             chat.emit("chatMessage")
-
-            client.once("chatMessage", function()
+            let received = false
+            client.once("chatMessage", function ()
             {
-                done()
+                received = true
             })
+            setTimeout(function ()
+            {
+                if (received)
+                {
+                    done(new Error("should not receive the event as didn't subscribed"))
+                } else {
+                    done()
+                }
+            }, 500)
         })
 
+        it("should receive an event from a joined namespace after subscribed", function (done)
+        {
+            client.subscribe("chatMessage").then(function (data)
+            {
+                data.should.have.property("chatMessage")
+                data.chatMessage.should.equal("ok")
+                const chat = server.of("/chat")
+                chat.emit("chatMessage")
+                client.once("chatMessage", function ()
+                {
+                    done()
+                })
+            }).catch(function (error)
+            {
+                done(error)
+            })
+        })
+        
         it("should receive params from an event correctly", function(done)
         {
             const ns = server.of("/test")
