@@ -375,11 +375,14 @@ export class Server extends EventEmitter
             emit(event: string, ...params: Array<string>)
             {
                 const nsEvent = self.namespaces[name].events[event]
+
                 if (nsEvent)
                     for (const socket_id of nsEvent.sockets)
                     {
                         const socket = self.namespaces[name].clients.get(socket_id)
+
                         if (!socket) continue
+
                         socket.send(
                             self.dataPack.encode({
                                 notification: event,
