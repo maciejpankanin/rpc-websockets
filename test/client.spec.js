@@ -161,7 +161,8 @@ describe("Client", function()
         it("should call an RPC method with string id and receive a valid response", function(done)
         {
             let count = 1
-            const client = new WebSocket("ws://" + host + ":" + port, {}, (method) => {
+            const client = new WebSocket("ws://" + host + ":" + port, {}, (method) =>
+            {
                 count = count + 1
                 return `${method}-${count}`
             })
@@ -190,7 +191,7 @@ describe("Client", function()
                 const both = Promise.all([
                     client.call("greet"),
                     client.call("sum", [5, 3])
-                ]);
+                ])
 
                 both.then(function(response)
                 {
@@ -643,7 +644,9 @@ describe("Client", function()
                 if (received)
                 {
                     done(new Error("should not receive the event as didn't subscribed"))
-                } else {
+                }
+                else
+                {
                     done()
                 }
             }, 500)
@@ -666,7 +669,7 @@ describe("Client", function()
                 done(error)
             })
         })
-        
+
         it("should receive params from an event correctly", function(done)
         {
             const ns = server.of("/test")
@@ -732,10 +735,10 @@ describe("Client", function()
 
             let maxReconnectsReachedFired = false
 
-            client.on("max_reconnects_reached", function(code, reason)
+            client.on("max_reconnects_reached", function(code)
             {
                 maxReconnectsReachedFired = true
-                
+
                 // Verify the client state when max reconnects is reached
                 expect(client.getCurrentReconnects()).to.equal(2)
                 expect(client.willReconnect()).to.equal(false)
@@ -744,8 +747,10 @@ describe("Client", function()
             })
 
             // Timeout as fallback
-            setTimeout(() => {
-                if (!maxReconnectsReachedFired) {
+            setTimeout(() =>
+            {
+                if (!maxReconnectsReachedFired)
+                {
                     done(new Error("max_reconnects_reached event was not fired"))
                 }
             }, 1000)
@@ -768,7 +773,8 @@ describe("Client", function()
             })
 
             // Wait and verify the event is not fired
-            setTimeout(() => {
+            setTimeout(() =>
+            {
                 expect(maxReconnectsReachedFired).to.equal(false)
                 expect(client.willReconnect()).to.equal(true)
                 client.close()

@@ -257,9 +257,7 @@ var CommonClient = class extends eventemitter3.EventEmitter {
   * @return {Undefined}
   */
   close(code, data) {
-    if (this.socket) {
-      this.socket.close(code || 1e3, data);
-    }
+    if (this.socket) this.socket.close(code || 1e3, data);
   }
   /**
   * Enable / disable automatic reconnection.
