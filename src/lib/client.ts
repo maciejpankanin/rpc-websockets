@@ -399,7 +399,7 @@ export class CommonClient extends EventEmitter
             {
                 message = this.dataPack.decode(message)
             }
-            catch (error)
+            catch (_error)
             {
                 return
             }
