@@ -35,13 +35,14 @@
     "type": "git",
     "url": "git+https://github.com/elpheria/rpc-websockets.git"
   },
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
     "@swc/helpers": "^0.5.11",
-    "@types/uuid": "^10.0.0",
     "@types/ws": "^8.2.2",
     "buffer": "^6.0.3",
     "eventemitter3": "^5.0.1",
-    "uuid": "^14.0.0",
     "ws": "^8.5.0"
   },
   "optionalDependencies": {
